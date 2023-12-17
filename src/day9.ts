@@ -1,8 +1,9 @@
 const test_input = `0 3 6 9 12 15
 1 3 6 10 15 21
-10 13 16 21 30 45`.split('\n');
+10 13 16 21 30 45`.split("\n");
 
-const puzzle_input = `-7 -13 -20 -17 16 108 297 630 1163 1961 3098 4657 6730 9418 12831 17088 22317 28655 36248 45251 55828
+const puzzle_input =
+  `-7 -13 -20 -17 16 108 297 630 1163 1961 3098 4657 6730 9418 12831 17088 22317 28655 36248 45251 55828
 -9 -7 2 18 41 71 108 152 203 261 326 398 477 563 656 756 863 977 1098 1226 1361
 18 43 75 124 227 464 984 2058 4198 8412 16712 33078 65251 128055 249539 482232 923410 1750729 3283185 6082488 11117019
 -6 -9 1 33 90 172 288 493 991 2381 6180 15868 38931 90838 202739 436138 910176 1850835 3676819 7144659 13586416
@@ -201,60 +202,67 @@ const puzzle_input = `-7 -13 -20 -17 16 108 297 630 1163 1961 3098 4657 6730 941
 20 49 91 148 223 326 488 782 1360 2535 4967 10052 20663 42452 85992 170118 326916 608909 1099099 1924644 3275079
 8 21 38 68 129 258 528 1072 2114 4007 7278 12680 21251 34380 53880 82068 121852 176825 251366 350748 481253
 22 34 45 66 124 277 637 1405 2925 5765 10843 19666 34909 61964 112975 216635 440256 936212 2034033 4413874 9419018
-7 5 6 19 51 115 265 674 1768 4434 10360 22690 47477 97048 197614 405667 841505 1754475 3644414 7478901 15068411`.split('\n');
+7 5 6 19 51 115 265 674 1768 4434 10360 22690 47477 97048 197614 405667 841505 1754475 3644414 7478901 15068411`.split(
+    "\n",
+  );
 
 function log(u: unknown) {
-    console.log(JSON.stringify(u));
+  console.log(JSON.stringify(u));
 }
 
 function numStringToArray(src: string): number[] {
-    return src.split(' ').filter(s => s.trim().length > 0).map(Number);
+  return src
+    .split(" ")
+    .filter((s) => s.trim().length > 0)
+    .map(Number);
 }
 
 function part1(input: string[]) {
-
-    function nextRow(row: number[]): number {
-        if (row.every(i => i === 0)) { return 0; }
-
-        const newRow: number[] = [];
-        for (let i = 1; i < row.length; i++) {
-            newRow.push(row[i] - row[i - 1]);
-        }
-        const add = nextRow(newRow);
-
-        return row[row.length - 1] + add;
+  function nextRow(row: number[]): number {
+    if (row.every((i) => i === 0)) {
+      return 0;
     }
 
-    const next = input.map(r => {
-        const n = numStringToArray(r);
+    const newRow: number[] = [];
+    for (let i = 1; i < row.length; i++) {
+      newRow.push(row[i] - row[i - 1]);
+    }
+    const add = nextRow(newRow);
 
-        return nextRow(n);
-    });
+    return row[row.length - 1] + add;
+  }
 
-    log(next.reduce((a, c) => a + c));
+  const next = input.map((r) => {
+    const n = numStringToArray(r);
+
+    return nextRow(n);
+  });
+
+  log(next.reduce((a, c) => a + c));
 }
 
 function part2(input: string[]) {
-
-    function nextRow(row: number[]): number {
-        if (row.every(i => i === 0)) { return 0; }
-
-        const newRow: number[] = [];
-        for (let i = 1; i < row.length; i++) {
-            newRow.push(row[i] - row[i - 1]);
-        }
-        const add = nextRow(newRow);
-
-        return row[0] - add;
+  function nextRow(row: number[]): number {
+    if (row.every((i) => i === 0)) {
+      return 0;
     }
 
-    const next = input.map(r => {
-        const n = numStringToArray(r);
+    const newRow: number[] = [];
+    for (let i = 1; i < row.length; i++) {
+      newRow.push(row[i] - row[i - 1]);
+    }
+    const add = nextRow(newRow);
 
-        return nextRow(n);
-    });
+    return row[0] - add;
+  }
 
-    log(next.reduce((a, c) => a + c));
+  const next = input.map((r) => {
+    const n = numStringToArray(r);
+
+    return nextRow(n);
+  });
+
+  log(next.reduce((a, c) => a + c));
 }
 
 part2(puzzle_input);

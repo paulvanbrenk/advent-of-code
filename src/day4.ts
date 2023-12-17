@@ -3,9 +3,10 @@ Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19
 Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
 Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
 Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
-Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`.split('\n');
+Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`.split("\n");
 
-const puzzle_input = `Card   1:  2 15 17 11 64 59 45 41 61 19 |  4 36 62 43 94 41 24 25 13 83 97 86 61 90 67  7 15 58 18 19 38 17 49 52 37
+const puzzle_input =
+  `Card   1:  2 15 17 11 64 59 45 41 61 19 |  4 36 62 43 94 41 24 25 13 83 97 86 61 90 67  7 15 58 18 19 38 17 49 52 37
 Card   2: 41 62 67 93 88 12 78 51 95 49 | 55 63 89 78 45 11 62 50 81  9 32 82 15 36 74 54  4 58  5 56 44 83 90 49 34
 Card   3: 51 22 38 33 85 23 56 76 60 93 | 94 40 61 37 38 82 93 96 13 50 81 65 56 26  4 18 86 30  8 16 60 27 23 48 51
 Card   4: 51  6 90 10 97 65 19 17 24  3 | 93 82 10 13 17  3 90 74 14  7 77 38 70 97 72 60  6 79 65 94 24 19 51 45 28
@@ -194,51 +195,57 @@ Card 186: 24 91 35 21 16 71 94 95 25 53 | 60  5 17 58 82 35 45 80 28 16 13 53 68
 Card 187: 96 39 77 52 97 33 80 99 18 15 | 48  8 85 79 81 33 43 90 62 14 36 65  2 32 82 15 91 23 34 68 56 87 11 57 73
 Card 188:  8 35 86 95 94 65 26 11 96 31 |  2 98 50 33 59 93 28 49 87 29 79  8 23  6 54 16 82 96 83 61 27 60 53 62 30
 Card 189: 60 27 78 55 84  1 36 28 20 77 | 45 85 75  8 54 74 58 73 17 68 13 53 47 79  7 65 35 40 51 87 18 37 71 72 21
-Card 190: 41 31 39 33 54 42 71 47 59 24 | 21 96 85 12 81 83 64 87 93 77 92 38 25 52 20 88 65 10 29 16 95 98 22 37 15`.split('\n');
+Card 190: 41 31 39 33 54 42 71 47 59 24 | 21 96 85 12 81 83 64 87 93 77 92 38 25 52 20 88 65 10 29 16 95 98 22 37 15`.split(
+    "\n",
+  );
 
-const intersect = (l: string[], r: string[]) => l.filter(value => r.includes(value));
-
+const intersect = (l: string[], r: string[]) =>
+  l.filter((value) => r.includes(value));
 
 function part1(input: string[]) {
+  const result = input
+    .map((r) => {
+      const [_, winString, numString] = r.split(/[:|]/);
+      const winners = winString.split(" ").filter((s) => s.length > 0);
+      const numbers = numString.split(" ").filter((s) => s.length > 0);
 
-    const result = input.map(r => {
-        const [_, winString, numString] = r.split(/[:|]/);
-        const winners = winString.split(' ').filter(s => s.length > 0);
-        const numbers = numString.split(' ').filter(s => s.length > 0);
+      // console.log(JSON.stringify(winners) + ':' + JSON.stringify(numbers));
 
-        // console.log(JSON.stringify(winners) + ':' + JSON.stringify(numbers));
+      const prices = intersect(winners, numbers);
+      return prices.length > 0 ? 2 ** (prices.length - 1) : 0;
+    })
+    .reduce((a, c) => a + c);
 
-        const prices = intersect(winners, numbers);
-        return prices.length > 0 ? 2 ** (prices.length - 1) : 0;
-    }).reduce((a, c) => a + c);
-
-    console.log(result);
+  console.log(result);
 }
 
 function part2(input: string[]) {
+  const count: number[] = new Array<number>(input.length).fill(
+    1,
+    0,
+    input.length,
+  );
 
-    const count: number[] = (new Array<number>(input.length)).fill(1, 0, input.length);
+  input.forEach((r, i) => {
+    const [_, winString, numString] = r.split(/[:|]/);
+    const winners = winString.split(" ").filter((s) => s.length > 0);
+    const numbers = numString.split(" ").filter((s) => s.length > 0);
 
-    input.forEach((r, i) => {
-        const [_, winString, numString] = r.split(/[:|]/);
-        const winners = winString.split(' ').filter(s => s.length > 0);
-        const numbers = numString.split(' ').filter(s => s.length > 0);
+    // console.log(JSON.stringify(winners) + ':' + JSON.stringify(numbers));
 
-        // console.log(JSON.stringify(winners) + ':' + JSON.stringify(numbers));
+    let prices = intersect(winners, numbers).length;
+    const multiplier = count[i];
+    let j = i + 1;
+    while (prices > 0) {
+      count[j] = count[j] + multiplier;
+      j++;
+      prices--;
+    }
+  });
 
-        let prices = intersect(winners, numbers).length;
-        const multiplier = count[i];
-        let j = i + 1;
-        while (prices > 0) {
-            count[j] = count[j] + multiplier;
-            j++;
-            prices--;
-        }
-    });
+  const result = count.reduce((a, c) => a + c);
 
-    const result = count.reduce((a, c) => a + c);
-
-    console.log(result);
+  console.log(result);
 }
 
 part2(puzzle_input);

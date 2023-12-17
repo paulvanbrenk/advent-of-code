@@ -30,10 +30,10 @@ temperature-to-humidity map:
 
 humidity-to-location map:
 60 56 37
-56 93 4`.split('\n');
+56 93 4`.split("\n");
 
-
-const puzzle_input = `seeds: 4188359137 37519573 3736161691 172346126 2590035450 66446591 209124047 106578880 1404892542 30069991 3014689843 117426545 2169439765 226325492 1511958436 177344330 1822605035 51025110 382778843 823998526
+const puzzle_input =
+  `seeds: 4188359137 37519573 3736161691 172346126 2590035450 66446591 209124047 106578880 1404892542 30069991 3014689843 117426545 2169439765 226325492 1511958436 177344330 1822605035 51025110 382778843 823998526
 
 seed-to-soil map:
 1014943420 3864598346 36796924
@@ -269,174 +269,176 @@ humidity-to-location map:
 223340676 773673306 159660154
 1911475087 970928565 61041169
 1896801130 2525549997 14673957
-2623661520 1700925778 153791746`.split('\n');
+2623661520 1700925778 153791746`.split("\n");
 
 function log(u: unknown) {
-    console.log(JSON.stringify(u));
+  console.log(JSON.stringify(u));
 }
 
 function numStringToArray(src: string): number[] {
-    return src.split(' ').filter(s => s.trim().length > 0).map(Number);
+  return src
+    .split(" ")
+    .filter((s) => s.trim().length > 0)
+    .map(Number);
 }
 
 function part1(input: string[]) {
+  function getSeeds(s: string) {
+    const idx = s.indexOf(":");
+    const ret = numStringToArray(s.substring(idx + 1));
+    return ret;
+  }
 
-    function getSeeds(s: string) {
-        const idx = s.indexOf(':');
-        const ret = numStringToArray(s.substring(idx + 1));
-        return ret;
+  const seeds = getSeeds(input[0]);
+  let i = 1;
+  let header = false;
+  const transformRanges: number[][][] = [];
+  let transformId = 0;
+
+  while (i < input.length) {
+    if (input[i].includes(":")) {
+      header = true;
+      i++;
+      continue;
     }
-
-    const seeds = getSeeds(input[0]);
-    let i = 1;
-    let header = false;
-    const transformRanges: number[][][] = [];
-    let transformId = 0;
-
-    while (i < input.length) {
-        if (input[i].includes(':')) {
-            header = true;
-            i++;
-            continue;
-        }
-        if (input[i].length == 0) {
-            if (header) {
-                header = false;
-                transformId++;
-            }
-            i++;
-            continue;
-        }
-        // collect ranges
-        const range = numStringToArray(input[i]);
-        const trans = transformRanges[transformId] ?? [];
-        trans.push(range);
-        transformRanges[transformId] = trans.sort((a, b) => a[1] - b[1]);
-        i++;
+    if (input[i].length == 0) {
+      if (header) {
+        header = false;
+        transformId++;
+      }
+      i++;
+      continue;
     }
+    // collect ranges
+    const range = numStringToArray(input[i]);
+    const trans = transformRanges[transformId] ?? [];
+    trans.push(range);
+    transformRanges[transformId] = trans.sort((a, b) => a[1] - b[1]);
+    i++;
+  }
 
-    const locations = transformRanges.reduce((a, c, i) => {
-        const result = a.map(s => {
-            for (let r of c) {
-                const [dest, source, length] = r;
+  const locations = transformRanges.reduce((a, c, i) => {
+    const result = a.map((s) => {
+      for (let r of c) {
+        const [dest, source, length] = r;
 
-                if (s < source) {
-                    return s;
-                }
-                if (s < source + length) {
-                    return s + dest - source;
-                }
-            }
-            return s;
-        });
+        if (s < source) {
+          return s;
+        }
+        if (s < source + length) {
+          return s + dest - source;
+        }
+      }
+      return s;
+    });
 
-        log(result);
-        return result;
-    }, seeds);
+    log(result);
+    return result;
+  }, seeds);
 
+  const minimum = locations.reduce((a, c) => Math.min(a, c));
 
-    const minimum = locations.reduce((a, c) => Math.min(a, c));
-
-    log(`answer: ${minimum}`);
+  log(`answer: ${minimum}`);
 }
 
-
-
 function part2(input: string[]) {
+  function getSeeds(s: string) {
+    const idx = s.indexOf(":");
+    const ret = numStringToArray(s.substring(idx + 1));
+    const result: [number, number][] = [];
+    for (let i = 0, j = 1; j < ret.length; i += 2, j += 2) {
+      result.push([ret[i], ret[j]]);
+    }
+    return result.sort((a, b) => a[0] - b[0]);
+  }
 
-    function getSeeds(s: string) {
-        const idx = s.indexOf(':');
-        const ret = numStringToArray(s.substring(idx + 1));
-        const result: [number, number][] = [];
-        for (let i = 0, j = 1; j < ret.length; i += 2, j += 2) {
-            result.push([ret[i], ret[j]]);
+  const seeds = getSeeds(input[0]);
+  let i = 1;
+  let header = false;
+  const transformRanges: number[][][] = [];
+  let transformId = 0;
+
+  while (i < input.length) {
+    if (input[i].includes(":")) {
+      header = true;
+      i++;
+      continue;
+    }
+    if (input[i].length == 0) {
+      if (header) {
+        header = false;
+        transformId++;
+      }
+      i++;
+      continue;
+    }
+    // collect ranges
+    const range = numStringToArray(input[i]);
+    const trans = transformRanges[transformId] ?? [];
+    trans.push(range);
+    transformRanges[transformId] = trans.sort((a, b) => a[1] - b[1]);
+    i++;
+  }
+
+  const locations = transformRanges.reduce((a: [number, number][], c, i) => {
+    const result: [number, number][] = [];
+    while (a.length > 0) {
+      const [s, cnt] = a.pop() ?? [];
+      if (s == null || cnt == null) {
+        break;
+      }
+      let handled = false;
+      for (let r of c) {
+        const [dest, source, length] = r;
+        handled = false;
+        //  log(`${s}-${s + cnt} >> ${source}-${source + length - 1}`);
+        if (s < source) {
+          if (s + cnt <= source) {
+            result.push([s, cnt]);
+            handled = true;
+            break;
+          } else {
+            // part of the seed range is handled
+            const newCnt = source - s;
+            a.push([s, newCnt]);
+            a.push([source, cnt - newCnt]);
+            handled = true;
+            break;
+          }
         }
-        return result.sort((a, b) => a[0] - b[0]);
+        if (s < source + length) {
+          // entire range fits
+          if (s + cnt <= source + length) {
+            result.push([s + dest - source, cnt]);
+            handled = true;
+            break;
+          } else {
+            // part 1
+            a.push([s, source + length - s]);
+            // log([s, source + length - s]);
+
+            a.push([source + length, cnt - (source + length - s)]);
+            // log([source + length, cnt - (source + length - s)]);
+            handled = true;
+            break;
+          }
+        }
+      }
+      if (!handled) {
+        result.push([s, cnt]);
+      }
     }
 
-    const seeds = getSeeds(input[0]);
-    let i = 1;
-    let header = false;
-    const transformRanges: number[][][] = [];
-    let transformId = 0;
+    log(result.sort((a, b) => a[0] - b[0]));
+    return result.sort((a, b) => a[0] - b[0]);
+  }, seeds);
 
-    while (i < input.length) {
-        if (input[i].includes(':')) {
-            header = true;
-            i++;
-            continue;
-        }
-        if (input[i].length == 0) {
-            if (header) {
-                header = false;
-                transformId++;
-            }
-            i++;
-            continue;
-        }
-        // collect ranges
-        const range = numStringToArray(input[i]);
-        const trans = transformRanges[transformId] ?? [];
-        trans.push(range);
-        transformRanges[transformId] = trans.sort((a, b) => a[1] - b[1]);
-        i++;
-    }
+  const minimum = locations.reduce(
+    (a, c) => Math.min(a, c[0]),
+    Number.MAX_VALUE,
+  );
 
-    const locations = transformRanges.reduce((a: [number, number][], c, i) => {
-        const result: [number, number][] = [];
-        while (a.length > 0) {
-            const [s, cnt] = a.pop() ?? [];
-            if (s == null || cnt == null) { break; }
-            let handled = false;
-            for (let r of c) {
-                const [dest, source, length] = r;
-                handled = false;
-                //  log(`${s}-${s + cnt} >> ${source}-${source + length - 1}`);
-                if (s < source) {
-                    if (s + cnt <= source) {
-                        result.push([s, cnt]);
-                        handled = true;
-                        break;
-                    } else {
-                        // part of the seed range is handled
-                        const newCnt = source - s;
-                        a.push([s, newCnt]);
-                        a.push([source, cnt - newCnt]);
-                        handled = true;
-                        break;
-                    }
-                }
-                if (s < source + length) {
-                    // entire range fits
-                    if (s + cnt <= source + length) {
-                        result.push([s + dest - source, cnt]);
-                        handled = true;
-                        break;
-                    } else {
-                        // part 1 
-                        a.push([s, source + length - s]);
-                        // log([s, source + length - s]);
-
-                        a.push([source + length, cnt - (source + length - s)]);
-                        // log([source + length, cnt - (source + length - s)]);
-                        handled = true;
-                        break;
-                    }
-                }
-            }
-            if (!handled) {
-                result.push([s, cnt]);
-            }
-        }
-
-        log(result.sort((a, b) => a[0] - b[0]));
-        return result.sort((a, b) => a[0] - b[0]);
-    }, seeds);
-
-
-    const minimum = locations.reduce((a, c) => Math.min(a, c[0]), Number.MAX_VALUE);
-
-    log(`answer: ${minimum}`);
+  log(`answer: ${minimum}`);
 }
 
 part2(puzzle_input);

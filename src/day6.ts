@@ -1,8 +1,7 @@
 const test_input = `Time:      7  15   30
 Distance:  9  40  200`.split("\n");
 
-const puzzle_input = `Time:        46     68     98     66
-Distance:   358   1054   1807   1080`.split("\n");
+const puzzle_input = `<get from aoc website>`.split("\n");
 
 function log(u: unknown) {
   console.log(JSON.stringify(u));

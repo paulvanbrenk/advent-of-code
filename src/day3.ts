@@ -7,26 +7,26 @@ const test_input = `467..114..
 ..592.....
 ......755.
 ...$.*....
-.664.598..`.split("\n");
+.664.598..`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function isNumber(c: string) {
-  return "0123456789".includes(c);
+  return '0123456789'.includes(c);
 }
 
 function part1(input: string[]) {
   let sum = 0;
 
   // state
-  let value: string = "";
+  let value: string = '';
   let isPart: boolean = false;
 
   function check(i: number, j: number): boolean {
     for (let x = i - 1; x <= i + 1; x++) {
       for (let y = j - 1; y <= j + 1; y++) {
         const c = input[x]?.[y];
-        if (c != null && !isNumber(c) && c !== ".") {
+        if (c != null && !isNumber(c) && c !== '.') {
           return true;
         }
       }
@@ -36,18 +36,18 @@ function part1(input: string[]) {
 
   for (let i = 0; i < input.length; i++) {
     const row = input[i];
-    value = "";
+    value = '';
     isPart = false;
     // check past end of array
     for (let j = 0; j <= row.length; j++) {
       const c = row[j];
       if (!isNumber(c)) {
-        if (value != "" && isPart) {
+        if (value != '' && isPart) {
           console.log(value);
           sum += Number(value);
         }
         // reset state
-        value = "";
+        value = '';
         isPart = false;
         continue;
       }
@@ -63,14 +63,14 @@ function part2(input: string[]) {
   const gears: Map<string, number[]> = new Map();
 
   // state
-  let value: string = "";
+  let value: string = '';
   let isGear: string | null = null;
 
   function check(i: number, j: number): string | null {
     for (let x = i - 1; x <= i + 1; x++) {
       for (let y = j - 1; y <= j + 1; y++) {
         const c = input[x]?.[y];
-        if (c != null && !isNumber(c) && c === "*") {
+        if (c != null && !isNumber(c) && c === '*') {
           return JSON.stringify([x, y]);
         }
       }
@@ -80,20 +80,20 @@ function part2(input: string[]) {
 
   for (let i = 0; i < input.length; i++) {
     const row = input[i];
-    value = "";
+    value = '';
     isGear = null;
     // check past end of array
     for (let j = 0; j <= row.length; j++) {
       const c = row[j];
       if (!isNumber(c)) {
-        if (value != "" && isGear != null) {
+        if (value != '' && isGear != null) {
           const key = JSON.stringify(isGear);
           const current: Array<number> = gears.get(key) ?? [];
           current.push(Number(value));
           gears.set(key, current);
         }
         // reset state
-        value = "";
+        value = '';
         isGear = null;
         continue;
       }

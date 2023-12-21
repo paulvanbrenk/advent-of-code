@@ -4,13 +4,13 @@ function log(u: unknown) {
 
 const test_input = `rn=1,cm-,qp=3,cm=2,qp-,pc=4,
 ot=9,ab=5,pc-,pc=6,ot=7`
-  .replace("\n", "")
-  .split(",");
+  .replace('\n', '')
+  .split(',');
 
 const puzzle_input = `<get from aoc website>`
-  .replace("\n", "")
-  .replace("\r", "")
-  .split(",");
+  .replace('\n', '')
+  .replace('\r', '')
+  .split(',');
 
 const cache: Map<string, number> = new Map();
 
@@ -60,7 +60,7 @@ function part2(input: string[]) {
     const [label, value] = input[i].split(/[-=]/);
 
     const boxNo = hash(label);
-    if (input[i].includes("=")) {
+    if (input[i].includes('=')) {
       // new or replace
       const box = boxes[boxNo] ?? [];
       const idx = box.findIndex((l) => l.label === label);
@@ -71,7 +71,7 @@ function part2(input: string[]) {
       }
       boxes[boxNo] = box;
     }
-    if (input[i].includes("-")) {
+    if (input[i].includes('-')) {
       // new or replace
       const box = boxes[boxNo] ?? [];
       const idx = box.findIndex((l) => l.label === label);

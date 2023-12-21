@@ -1,7 +1,7 @@
 const test_input = `Time:      7  15   30
-Distance:  9  40  200`.split("\n");
+Distance:  9  40  200`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u));
@@ -9,14 +9,14 @@ function log(u: unknown) {
 
 function numStringToArray(src: string): number[] {
   return src
-    .split(" ")
+    .split(' ')
     .filter((s) => s.trim().length > 0)
     .map(Number);
 }
 
 function part1(input: string[]) {
-  const times = numStringToArray(input[0].split(":")[1]);
-  const distances = numStringToArray(input[1].split(":")[1]);
+  const times = numStringToArray(input[0].split(':')[1]);
+  const distances = numStringToArray(input[1].split(':')[1]);
 
   const distance = (t: number, limit: number) => t * (limit - t);
   const midpoint = (limit: number) => limit / 2;
@@ -75,8 +75,8 @@ function part1(input: string[]) {
 }
 
 function part2(input: string[]) {
-  const time = Number(input[0].split(":")[1].replaceAll(" ", ""));
-  const target = Number(input[1].split(":")[1].replaceAll(" ", ""));
+  const time = Number(input[0].split(':')[1].replaceAll(' ', ''));
+  const target = Number(input[1].split(':')[1].replaceAll(' ', ''));
 
   log({ time, target });
 

@@ -11,9 +11,9 @@ const test_input = `...#......
 .........#
 ..........
 .......#..
-#...#.....`.split("\n");
+#...#.....`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function part1(input: string[], age: number) {
   const filledRow: boolean[] = new Array(input.length).fill(false);
@@ -25,7 +25,7 @@ function part1(input: string[], age: number) {
     const r = input[i];
     for (let j = 0; j < r.length; j++) {
       const c = r[j];
-      if (c === "#") {
+      if (c === '#') {
         galaxies.push([i, j]);
         filledCol[j] = true;
         filledRow[i] = true;

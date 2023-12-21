@@ -1,4 +1,4 @@
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 const testInput = `two1nine
 eightwothree
@@ -6,11 +6,11 @@ abcone2threexyz
 xtwone3four
 4nineeightseven2
 zoneight234
-7pqrstsixteen`.split("\n");
+7pqrstsixteen`.split('\n');
 
 function part1() {
   const isNumber = (s: string) => {
-    return "0123456789".indexOf(s) > -1;
+    return '0123456789'.indexOf(s) > -1;
   };
 
   const result = puzzle_input
@@ -36,58 +36,58 @@ function part1() {
 }
 
 const numbers = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
+  'zero',
+  'one',
+  'two',
+  'three',
+  'four',
+  'five',
+  'six',
+  'seven',
+  'eight',
+  'nine',
+  '0',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
 ];
 
 function part2() {
   const asDigit = (s: string) => {
-    let num = "0123456789".indexOf(s);
+    let num = '0123456789'.indexOf(s);
     if (num > -1) {
       return num.toString();
     }
     num = [
-      "zero",
-      "one",
-      "two",
-      "three",
-      "four",
-      "five",
-      "six",
-      "seven",
-      "eight",
-      "nine",
+      'zero',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
     ].indexOf(s);
     if (num > -1) {
       return num.toString();
     }
-    return "0";
+    return '0';
   };
 
   const result = puzzle_input
     .map((r) => {
       let first = Number.MAX_VALUE;
-      let firstNumber = "";
+      let firstNumber = '';
       let last = -1;
-      let lastNumber = "";
+      let lastNumber = '';
       numbers.forEach((v) => {
         const f = r.indexOf(v);
         if (f > -1 && f < first) {

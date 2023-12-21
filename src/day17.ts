@@ -1,4 +1,4 @@
-import { Heap } from "heap-js";
+import { Heap } from 'heap-js';
 
 const test_input = `2413432311323
 3215453535623
@@ -13,20 +13,20 @@ const test_input = `2413432311323
 1224686865563
 2546548887735
 4322674655533`
-  .split("\n")
-  .map((c) => c.split("").map(Number));
+  .split('\n')
+  .map((c) => c.split('').map(Number));
 
 const test_input2 = `111111111111
 999999999991
 999999999991
 999999999991
 999999999991`
-  .split("\n")
-  .map((c) => c.split("").map(Number));
+  .split('\n')
+  .map((c) => c.split('').map(Number));
 
 const puzzle_input = `<get from aoc website>`
-  .split("\n")
-  .map((c) => c.split("").map(Number));
+  .split('\n')
+  .map((c) => c.split('').map(Number));
 
 type Coords = [row: number, col: number];
 
@@ -72,7 +72,7 @@ function part1(input: readonly number[][], minStep = 0, maxStep = 3) {
   while (stack.length > 0) {
     const currentMin = stack.pop();
     if (currentMin == null) {
-      throw new Error("null entry");
+      throw new Error('null entry');
     }
 
     const key = getKey(currentMin);
@@ -83,7 +83,7 @@ function part1(input: readonly number[][], minStep = 0, maxStep = 3) {
     visited.add(key);
 
     if (currentMin == null) {
-      throw new Error("null in stack");
+      throw new Error('null in stack');
     }
 
     // find next directions
@@ -136,7 +136,7 @@ function part1(input: readonly number[][], minStep = 0, maxStep = 3) {
       }
     }
   }
-  log("no result");
+  log('no result');
 }
 
 part1(test_input); // 102

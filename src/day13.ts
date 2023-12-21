@@ -12,9 +12,9 @@ const test_input = `#.##..##.
 #####.##.
 #####.##.
 ..##..###
-#....#..#`.split("\n");
+#....#..#`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u, undefined, 2));
@@ -70,7 +70,7 @@ function part1(input: string[]) {
     const cc: number[] = [];
 
     const rotated = rotateMatrixRight(c.map((r) => Array.from(r))).map((r) =>
-      r.join(""),
+      r.join(''),
     );
     for (let i = 0; i < rotated.length - 1; i++) {
       if (rotated[i] === rotated[i + 1]) {
@@ -141,7 +141,7 @@ function part2(input: string[]) {
     const cc: number[] = [];
 
     const rotated = rotateMatrixRight(mir.map((r) => Array.from(r))).map((r) =>
-      r.join(""),
+      r.join(''),
     );
     for (let i = 0; i < rotated.length - 1; i++) {
       const smudgeCnt = diffCount(rotated[i], rotated[i + 1]);

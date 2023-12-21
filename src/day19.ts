@@ -14,9 +14,9 @@ hdj{m>838:A,pv}
 {x=1679,m=44,a=2067,s=496}
 {x=2036,m=264,a=79,s=2244}
 {x=2461,m=1339,a=466,s=291}
-{x=2127,m=1623,a=2188,s=1013}`.split("\n");
+{x=2127,m=1623,a=2188,s=1013}`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u, undefined, 2));
@@ -86,13 +86,13 @@ type Check = {
 };
 
 const isFunc = (s: string) => {
-  return "<>".indexOf(s[1]);
+  return '<>'.indexOf(s[1]);
 };
 
 function parsePart(part: string): Part {
   const obj: Part = { x: 0, m: 0, a: 0, s: 0 };
 
-  const props = part.slice(1, part.length - 1).split(",");
+  const props = part.slice(1, part.length - 1).split(',');
   for (const p of props) {
     const n = p.slice(0, 1);
     const v = p.slice(2);
@@ -103,7 +103,7 @@ function parsePart(part: string): Part {
 
 function parseChecks(checkString: string): Array<Check> {
   const checks: Array<Check> = [];
-  const t = checkString.split(",");
+  const t = checkString.split(',');
 
   // s>2770:qs,m<1801:hdj,R
 
@@ -113,7 +113,7 @@ function parseChecks(checkString: string): Array<Check> {
     if (funcIdx < 0) {
       throw new Error(`input ${checkString} idx ${i}`);
     }
-    const colIdx = p.indexOf(":");
+    const colIdx = p.indexOf(':');
     const val = Number(p.slice(2, colIdx));
     const tr = p.substring(colIdx + 1);
     const fr = i + 1 === t.length - 1 ? t[i + 1] : undefined;
@@ -177,14 +177,14 @@ function part1(input: string[]) {
   const [workflows, parts] = processInput(input);
 
   const results: number[] = parts.map((p) => {
-    let wf = workflows.get("in");
+    let wf = workflows.get('in');
 
     while (wf != null) {
       const result = execWf(p, wf);
-      if (result === "A") {
+      if (result === 'A') {
         return p.x + p.m + p.a + p.s;
       }
-      if (result === "R") {
+      if (result === 'R') {
         return 0;
       }
       if (result == null) {
@@ -213,18 +213,18 @@ function part2(input: string[]) {
   let finalCnt = 0;
 
   const q: [Range, string][] = [
-    [{ x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] }, "in"],
+    [{ x: [1, 4000], m: [1, 4000], a: [1, 4000], s: [1, 4000] }, 'in'],
   ];
 
   while (q.length > 0) {
     const next = q.pop();
     if (next == null) {
-      throw new Error("null in queue");
+      throw new Error('null in queue');
     }
     let [range, wfName] = next;
     let wf = workflows.get(wfName);
     if (wf == null) {
-      throw new Error("empty wf");
+      throw new Error('empty wf');
     }
     let i = 0;
     while (i < wf.length) {
@@ -235,9 +235,9 @@ function part2(input: string[]) {
         const nr = { ...range };
         nr[prop] = result.t;
 
-        if (t === "A") {
+        if (t === 'A') {
           finalCnt += multiply(nr);
-        } else if (t !== "R" && t != null) {
+        } else if (t !== 'R' && t != null) {
           q.push([nr, t]);
         }
       }
@@ -248,9 +248,9 @@ function part2(input: string[]) {
           i++;
           range = nr;
           continue;
-        } else if (f === "A") {
+        } else if (f === 'A') {
           finalCnt += multiply(nr);
-        } else if (f !== "R" && f != null) {
+        } else if (f !== 'R' && f != null) {
           q.push([nr, f]);
         }
       }

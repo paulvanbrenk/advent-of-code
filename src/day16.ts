@@ -11,9 +11,9 @@ const test_input = `.|...\\....
 ..../.\\\\..
 .-.-/..|..
 .|....-|.\\
-..//.|....`.split("\n");
+..//.|....`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 type coords = [row: number, col: number];
 function fillGrid(
@@ -57,21 +57,21 @@ function fillGrid(
       visited.add(`${x},${y}`);
       const c = grid[x][y];
 
-      if (c === ".") {
+      if (c === '.') {
         x += d[0];
         y += d[1];
       }
-      if (c === "/") {
+      if (c === '/') {
         d = d[0] === 0 ? [-1 * d[1], 0] : [0, -1 * d[0]];
         x += d[0];
         y += d[1];
       }
-      if (c === "\\") {
+      if (c === '\\') {
         d = d[0] === 0 ? [d[1], 0] : [0, d[0]];
         x += d[0];
         y += d[1];
       }
-      if (c === "-") {
+      if (c === '-') {
         if (d[0] === 0) {
           y += d[1];
         } else {
@@ -82,7 +82,7 @@ function fillGrid(
           break;
         }
       }
-      if (c === "|") {
+      if (c === '|') {
         if (d[1] === 0) {
           x += d[0];
         } else {

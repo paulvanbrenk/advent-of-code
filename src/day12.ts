@@ -1,13 +1,13 @@
-import { PerformanceMark, PerformanceMeasure } from "perf_hooks";
+import { PerformanceMark, PerformanceMeasure } from 'perf_hooks';
 
 const test_input = `???.### 1,1,3
 .??..??...?##. 1,1,3
 ?#?#?#?#?#?#?#? 1,3,1,6
 ????.#...#... 4,1,1
 ????.######..#####. 1,6,5
-?###???????? 3,2,1`.split("\n");
+?###???????? 3,2,1`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u));
@@ -15,7 +15,7 @@ function log(u: unknown) {
 
 function numStringToArray(src: string): number[] {
   return src
-    .split(",")
+    .split(',')
     .filter((s) => s.trim().length > 0)
     .map(Number);
 }
@@ -24,7 +24,7 @@ function validPositions(template: string, groups: number[]): number {
   let sum = 0;
   const q: [[string, number[]]] = [[template, groups]];
   while (q.length > 0) {
-    const [t, g] = q.pop() ?? ["", []];
+    const [t, g] = q.pop() ?? ['', []];
     //  log({ t, g });
 
     if (t.length === 0) {
@@ -35,7 +35,7 @@ function validPositions(template: string, groups: number[]): number {
     }
 
     if (g.length === 0) {
-      if (!t.includes("#")) {
+      if (!t.includes('#')) {
         sum += 1;
         continue;
       }
@@ -43,31 +43,31 @@ function validPositions(template: string, groups: number[]): number {
 
     if (t.length >= g.reduce((a, c) => a + c, 0) + g.length - 1) {
       const c = t[0];
-      if (c === "?") {
-        q.push(["." + t.slice(1), g]);
-        q.push(["#" + t.slice(1), g]);
+      if (c === '?') {
+        q.push(['.' + t.slice(1), g]);
+        q.push(['#' + t.slice(1), g]);
       }
 
-      if (c === ".") {
+      if (c === '.') {
         let i = 1;
         for (; i < t.length; i++) {
-          if (t[i] !== ".") {
+          if (t[i] !== '.') {
             break;
           }
         }
         q.push([t.slice(i), g]);
       }
 
-      if (c === "#") {
+      if (c === '#') {
         const [cr, ...rem] = g;
         let i = 0;
         for (; i < cr; i++) {
-          if (t[i] === ".") {
+          if (t[i] === '.') {
             break;
           }
         }
         if (i === cr) {
-          if (t[i] !== "#") {
+          if (t[i] !== '#') {
             q.push([t.slice(cr + 1), rem]);
           }
         }
@@ -98,7 +98,7 @@ function validPositionsRecurse(template: string, groups: number[]): number {
   }
 
   if (g.length === 0) {
-    if (!t.includes("#")) {
+    if (!t.includes('#')) {
       cache.set(key, 1);
       return 1;
     }
@@ -106,18 +106,18 @@ function validPositionsRecurse(template: string, groups: number[]): number {
 
   if (t.length >= g.reduce((a, c) => a + c, 0) + g.length - 1) {
     const c = t[0];
-    if (c === "?") {
+    if (c === '?') {
       const sum =
-        validPositionsRecurse("." + t.slice(1), g) +
-        validPositionsRecurse("#" + t.slice(1), g);
+        validPositionsRecurse('.' + t.slice(1), g) +
+        validPositionsRecurse('#' + t.slice(1), g);
       cache.set(key, sum);
       return sum;
     }
 
-    if (c === ".") {
+    if (c === '.') {
       let i = 1;
       for (; i < t.length; i++) {
-        if (t[i] !== ".") {
+        if (t[i] !== '.') {
           break;
         }
       }
@@ -126,16 +126,16 @@ function validPositionsRecurse(template: string, groups: number[]): number {
       return sum;
     }
 
-    if (c === "#") {
+    if (c === '#') {
       const [cr, ...rem] = g;
       let i = 0;
       for (; i < cr; i++) {
-        if (t[i] === ".") {
+        if (t[i] === '.') {
           break;
         }
       }
       if (i === cr) {
-        if (t[i] !== "#") {
+        if (t[i] !== '#') {
           const sum = validPositionsRecurse(t.slice(cr + 1), rem);
           cache.set(key, sum);
           return sum;
@@ -149,7 +149,7 @@ function validPositionsRecurse(template: string, groups: number[]): number {
 
 function part1(input: string[]) {
   const counts: number[] = input.map((r) => {
-    const [template, groupString] = r.split(" ");
+    const [template, groupString] = r.split(' ');
     const groups = numStringToArray(groupString);
 
     return validPositions(template, groups);
@@ -161,10 +161,10 @@ function part1(input: string[]) {
 
 function part2(input: string[]) {
   const expanded: [string, number[]][] = input.map((r) => {
-    const [t, g] = r.split(" ");
-    const groupString = new Array<string>(5).fill(g.trim()).join(",");
+    const [t, g] = r.split(' ');
+    const groupString = new Array<string>(5).fill(g.trim()).join(',');
 
-    const newT = new Array<string>(5).fill(t).join("?");
+    const newT = new Array<string>(5).fill(t).join('?');
 
     const newG = numStringToArray(groupString);
 

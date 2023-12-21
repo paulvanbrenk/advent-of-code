@@ -1,12 +1,12 @@
 function log(u: unknown) {
-  console.log(JSON.stringify(u, null, "  "));
+  console.log(JSON.stringify(u, null, '  '));
 }
 
 const test_input = `LLR
 
 AAA = (BBB, BBB)
 BBB = (AAA, ZZZ)
-ZZZ = (ZZZ, ZZZ)`.split("\n");
+ZZZ = (ZZZ, ZZZ)`.split('\n');
 
 const test_input2 = `LR
 
@@ -17,43 +17,43 @@ const test_input2 = `LR
 22B = (22C, 22C)
 22C = (22Z, 22Z)
 22Z = (22B, 22B)
-XXX = (XXX, XXX)`.split("\n");
+XXX = (XXX, XXX)`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function part1(input: string[]) {
   const directions = input[0];
 
   const map = new Map(
     input.slice(2).map((i) => {
-      const [name, routes] = i.split("=");
-      const parts = routes.replaceAll(/[)( )]/g, "").split(",");
+      const [name, routes] = i.split('=');
+      const parts = routes.replaceAll(/[)( )]/g, '').split(',');
 
       return [name.trim(), parts];
     }),
   );
 
-  let step = "AAA";
+  let step = 'AAA';
   let index = 0;
   const dirCnt = directions.length;
-  while (step != "ZZZ") {
+  while (step != 'ZZZ') {
     const [L, R] = map.get(step) ?? [];
     if (L == null || R == null) {
-      throw new Error("!!");
+      throw new Error('!!');
     }
 
     const pick = directions[index % dirCnt];
     switch (pick) {
-      case "L": {
+      case 'L': {
         step = L;
         break;
       }
-      case "R": {
+      case 'R': {
         step = R;
         break;
       }
       default:
-        throw new Error("!!!");
+        throw new Error('!!!');
     }
     index++;
   }
@@ -68,11 +68,11 @@ function part2(input: string[]) {
 
   const map = new Map(
     input.slice(2).map((i) => {
-      const [name, routes] = i.split("=");
-      const parts = routes.replaceAll(/[)( )]/g, "").split(",");
+      const [name, routes] = i.split('=');
+      const parts = routes.replaceAll(/[)( )]/g, '').split(',');
 
       const n = name.trim();
-      if (n.endsWith("A")) {
+      if (n.endsWith('A')) {
         steps.push(n);
       }
 
@@ -84,29 +84,29 @@ function part2(input: string[]) {
   const cycles = steps.map((step) => {
     let index = 0;
     let counting = false;
-    while (!step.endsWith("Z") && !counting) {
-      if (!counting && step.endsWith("Z")) {
+    while (!step.endsWith('Z') && !counting) {
+      if (!counting && step.endsWith('Z')) {
         index = 0;
       }
-      counting = counting || step.endsWith("Z");
+      counting = counting || step.endsWith('Z');
       const pick = directions[index % dirCnt];
 
       const [L, R] = map.get(step) ?? [];
       if (L == null || R == null) {
-        throw new Error("!!");
+        throw new Error('!!');
       }
 
       switch (pick) {
-        case "L": {
+        case 'L': {
           step = L;
           break;
         }
-        case "R": {
+        case 'R': {
           step = R;
           break;
         }
         default:
-          throw new Error("!!!");
+          throw new Error('!!!');
       }
 
       index++;

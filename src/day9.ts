@@ -1,8 +1,8 @@
 const test_input = `0 3 6 9 12 15
 1 3 6 10 15 21
-10 13 16 21 30 45`.split("\n");
+10 13 16 21 30 45`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u));
@@ -10,7 +10,7 @@ function log(u: unknown) {
 
 function numStringToArray(src: string): number[] {
   return src
-    .split(" ")
+    .split(' ')
     .filter((s) => s.trim().length > 0)
     .map(Number);
 }

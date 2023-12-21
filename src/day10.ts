@@ -2,7 +2,7 @@ const test_input = `..F7.
 .FJ|.
 SJ.L7
 |F--J
-LJ...`.split("\n");
+LJ...`.split('\n');
 
 const test_input2 = `FF7FSF7F7F7F7F7F---7
 L|LJ||||||||||||F--J
@@ -13,9 +13,9 @@ L---JF-JLJ.||-FJLJJ7
 |FFJF7L7F-JF7|JL---7
 7-L-JL7||F7|L7F-7F7|
 L.L7LFJ|||||FJL7||LJ
-L7JLJL-JLJLJL--JLJ.L`.split("\n");
+L7JLJL-JLJLJL--JLJ.L`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u));
@@ -23,62 +23,62 @@ function log(u: unknown) {
 
 function findStart(input: string[]): [number, number] {
   for (let i = 0; i < input.length; i++) {
-    const j = input[i].indexOf("S");
+    const j = input[i].indexOf('S');
     if (j != -1) {
       return [i, j];
     }
   }
-  throw new Error("no start");
+  throw new Error('no start');
 }
 
 function findStartDirection(
   input: string[],
   start: [number, number],
 ): [number, number, string] {
-  let dir: string = "";
+  let dir: string = '';
 
   let result: [number, number, string] | undefined;
 
   const up = input[start[0] - 1]?.[start[1]];
-  if (up === "|" || up === "7" || up === "F") {
-    dir = "up";
+  if (up === '|' || up === '7' || up === 'F') {
+    dir = 'up';
   }
 
   const down = input[start[0] + 1]?.[start[1]];
-  if (down === "|" || down === "L" || down === "J") {
-    if (dir === "up") {
-      result = [1, 0, "|"];
+  if (down === '|' || down === 'L' || down === 'J') {
+    if (dir === 'up') {
+      result = [1, 0, '|'];
     } else {
-      dir = "down";
+      dir = 'down';
     }
   }
 
   const left = input[start[0]]?.[start[1] - 1];
-  if (left === "-" || left === "L" || left === "F") {
-    if (dir === "up") {
-      result = [0, -1, "J"];
-    } else if (dir === "down") {
-      result = [0, -1, "7"];
+  if (left === '-' || left === 'L' || left === 'F') {
+    if (dir === 'up') {
+      result = [0, -1, 'J'];
+    } else if (dir === 'down') {
+      result = [0, -1, '7'];
     } else {
-      dir = "left";
+      dir = 'left';
     }
   }
 
   const right = input[start[0]]?.[start[1] + 1];
-  if (right === "-" || right === "J" || right === "7") {
-    if (dir === "up") {
-      result = [0, 1, "L"];
-    } else if (dir === "down") {
-      result = [0, 1, "F"];
-    } else if (dir === "left") {
-      result = [0, 1, "-"];
+  if (right === '-' || right === 'J' || right === '7') {
+    if (dir === 'up') {
+      result = [0, 1, 'L'];
+    } else if (dir === 'down') {
+      result = [0, 1, 'F'];
+    } else if (dir === 'left') {
+      result = [0, 1, '-'];
     }
   }
 
   if (result != null) {
     return result;
   }
-  throw new Error("no direction from start");
+  throw new Error('no direction from start');
 }
 
 function part1(input: string[]) {
@@ -90,30 +90,30 @@ function part1(input: string[]) {
 
     const c = input[x][y];
     switch (c) {
-      case "|": {
+      case '|': {
         return [(x += dx), y];
       }
-      case "-": {
+      case '-': {
         return [x, (y += dy)];
       }
-      case "L": {
+      case 'L': {
         return dx != 0 ? [x, (y += 1)] : [x - 1, y];
       }
-      case "J": {
+      case 'J': {
         return dx != 0 ? [x, (y -= 1)] : [x - 1, y];
       }
-      case "7": {
+      case '7': {
         return dx != 0 ? [x, (y -= 1)] : [x + 1, y];
       }
-      case "F": {
+      case 'F': {
         return dx != 0 ? [x, (y += 1)] : [x + 1, y];
       }
-      case "S":
+      case 'S':
         return [-1, -1];
-      case ".":
-        throw new Error("sand");
+      case '.':
+        throw new Error('sand');
       default:
-        throw new Error("nothing");
+        throw new Error('nothing');
     }
   }
 
@@ -153,33 +153,33 @@ function part2(input: string[]) {
     }
 
     const c = input[x][y];
-    if (c === "S") {
+    if (c === 'S') {
       return [-1, -1];
     }
     pieces.set(`[${x},${y}]`, c);
     switch (c) {
-      case "|": {
+      case '|': {
         return [(x += dx), y];
       }
-      case "-": {
+      case '-': {
         return [x, (y += dy)];
       }
-      case "L": {
+      case 'L': {
         return dx != 0 ? [x, (y += 1)] : [x - 1, y];
       }
-      case "J": {
+      case 'J': {
         return dx != 0 ? [x, (y -= 1)] : [x - 1, y];
       }
-      case "7": {
+      case '7': {
         return dx != 0 ? [x, (y -= 1)] : [x + 1, y];
       }
-      case "F": {
+      case 'F': {
         return dx != 0 ? [x, (y += 1)] : [x + 1, y];
       }
-      case ".":
-        throw new Error("sand");
+      case '.':
+        throw new Error('sand');
       default:
-        throw new Error("nothing");
+        throw new Error('nothing');
     }
   }
 
@@ -212,7 +212,7 @@ function part2(input: string[]) {
   // fill
   let fill = 0;
   let output: string[][] = [[]];
-  let p = "";
+  let p = '';
   for (let i = 0; i < input.length; i++) {
     const r = input[i];
     output[i] = [];
@@ -221,27 +221,27 @@ function part2(input: string[]) {
       const key = `[${i},${j}]`;
       if (!pieces.has(key)) {
         fill += edges % 2;
-        output[i][j] = edges % 2 === 0 ? "." : "I";
+        output[i][j] = edges % 2 === 0 ? '.' : 'I';
       } else {
         const c = pieces.get(key);
-        output[i][j] = ".";
+        output[i][j] = '.';
         if (c == null) {
-          throw new Error("c");
+          throw new Error('c');
         }
-        if (c === "|") {
+        if (c === '|') {
           edges++;
         }
-        if (c === "J") {
-          if (p === "F") {
+        if (c === 'J') {
+          if (p === 'F') {
             edges++;
           }
-          p = "";
-        } else if (c === "7") {
-          if (p === "L") {
+          p = '';
+        } else if (c === '7') {
+          if (p === 'L') {
             edges++;
           }
-          p = "";
-        } else if (c === "L" || c === "F") {
+          p = '';
+        } else if (c === 'L' || c === 'F') {
           p = c;
         }
       }

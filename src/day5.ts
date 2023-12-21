@@ -30,9 +30,9 @@ temperature-to-humidity map:
 
 humidity-to-location map:
 60 56 37
-56 93 4`.split("\n");
+56 93 4`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u));
@@ -40,14 +40,14 @@ function log(u: unknown) {
 
 function numStringToArray(src: string): number[] {
   return src
-    .split(" ")
+    .split(' ')
     .filter((s) => s.trim().length > 0)
     .map(Number);
 }
 
 function part1(input: string[]) {
   function getSeeds(s: string) {
-    const idx = s.indexOf(":");
+    const idx = s.indexOf(':');
     const ret = numStringToArray(s.substring(idx + 1));
     return ret;
   }
@@ -59,7 +59,7 @@ function part1(input: string[]) {
   let transformId = 0;
 
   while (i < input.length) {
-    if (input[i].includes(":")) {
+    if (input[i].includes(':')) {
       header = true;
       i++;
       continue;
@@ -106,7 +106,7 @@ function part1(input: string[]) {
 
 function part2(input: string[]) {
   function getSeeds(s: string) {
-    const idx = s.indexOf(":");
+    const idx = s.indexOf(':');
     const ret = numStringToArray(s.substring(idx + 1));
     const result: [number, number][] = [];
     for (let i = 0, j = 1; j < ret.length; i += 2, j += 2) {
@@ -122,7 +122,7 @@ function part2(input: string[]) {
   let transformId = 0;
 
   while (i < input.length) {
-    if (input[i].includes(":")) {
+    if (input[i].includes(':')) {
       header = true;
       i++;
       continue;

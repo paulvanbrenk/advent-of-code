@@ -11,9 +11,9 @@ U 2 (#caa171)
 R 2 (#7807d2)
 U 3 (#a77fa3)
 L 2 (#015232)
-U 2 (#7a21e3)`.split("\n");
+U 2 (#7a21e3)`.split('\n');
 
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 function log(u: unknown) {
   console.log(JSON.stringify(u, undefined, 2));
@@ -26,7 +26,7 @@ function printGrid(coords: Coords[]) {
 
   const output: string[][] = new Array(max);
   for (let i = 0; i < output.length; i++) {
-    output[i] = new Array(max).fill(".");
+    output[i] = new Array(max).fill('.');
   }
 
   for (let i = 1; i < coords.length; i++) {
@@ -35,18 +35,18 @@ function printGrid(coords: Coords[]) {
     let start = Math.min(x1, x2);
     let end = Math.max(x1, x2);
     while (start <= end) {
-      output[start][y1] = "#";
+      output[start][y1] = '#';
       start++;
     }
     start = Math.min(y1, y2);
     end = Math.max(y1, y2);
     while (start <= end) {
-      output[x1][start] = "#";
+      output[x1][start] = '#';
       start++;
     }
   }
 
-  log({ o: output.map((r) => r.join("")) });
+  log({ o: output.map((r) => r.join('')) });
 }
 
 function part1(input: string[]) {
@@ -54,23 +54,23 @@ function part1(input: string[]) {
 
   const coords = input.reduce<Coords[]>(
     (acc, line) => {
-      const [d, c] = line.split(" ");
+      const [d, c] = line.split(' ');
 
       const cnt = Number(c);
       circ += Math.abs(cnt);
 
       const [vert, hor] = acc[acc.length - 1];
       switch (d) {
-        case "R": // right ++
+        case 'R': // right ++
           acc.push([vert, hor + cnt]);
           break;
-        case "L": // left --
+        case 'L': // left --
           acc.push([vert, hor - cnt]);
           break;
-        case "U": // up --
+        case 'U': // up --
           acc.push([vert - cnt, hor]);
           break;
-        case "D": // down ++
+        case 'D': // down ++
           acc.push([vert + cnt, hor]);
           break;
       }
@@ -98,7 +98,7 @@ function part2(input: string[]) {
 
   const coords = input.reduce<Coords[]>(
     (acc, line) => {
-      const code = line.split(" ")[2];
+      const code = line.split(' ')[2];
       const c = code.substring(2, 7);
       const d = code[7];
 
@@ -107,16 +107,16 @@ function part2(input: string[]) {
 
       const [vert, hor] = acc[acc.length - 1];
       switch (d) {
-        case "0": // right ++
+        case '0': // right ++
           acc.push([vert, hor + cnt]);
           break;
-        case "2": // left --
+        case '2': // left --
           acc.push([vert, hor - cnt]);
           break;
-        case "3": // up --
+        case '3': // up --
           acc.push([vert - cnt, hor]);
           break;
-        case "1": // down ++
+        case '1': // down ++
           acc.push([vert + cnt, hor]);
           break;
       }

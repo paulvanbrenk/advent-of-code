@@ -1,4 +1,4 @@
-const puzzle_input = `<get from aoc website>`.split("\n");
+const puzzle_input = `<get from aoc website>`.split('\n');
 
 const test_input = `2345A 1
 Q2KJJ 13
@@ -18,28 +18,28 @@ AAAAJ 59
 AAAAA 61
 2AAAA 23
 2JJJJ 53
-JJJJ2 41`.split("\n");
+JJJJ2 41`.split('\n');
 
 const test_input2 = `32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
-QQQJA 483`.split("\n");
+QQQJA 483`.split('\n');
 
 function log(u: unknown) {
-  console.log(JSON.stringify(u, null, "  "));
+  console.log(JSON.stringify(u, null, '  '));
 }
 
 const enum Kind {
-  "todo" = -2,
-  "error" = -1,
-  "five",
-  "four",
-  "full",
-  "three",
-  "two-pair",
-  "pair",
-  "high",
+  'todo' = -2,
+  'error' = -1,
+  'five',
+  'four',
+  'full',
+  'three',
+  'two-pair',
+  'pair',
+  'high',
 }
 
 type Hand = {
@@ -50,26 +50,26 @@ type Hand = {
 
 function part1(input: string[]) {
   const valuemap = [
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "T",
-    "J",
-    "Q",
-    "K",
-    "A",
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'T',
+    'J',
+    'Q',
+    'K',
+    'A',
   ];
 
   const mapped: Hand[] = input
     .map((c) => {
       let bucket: Map<string, number> = new Map();
 
-      const [cards, value] = c.split(" ");
+      const [cards, value] = c.split(' ');
       let kind: Kind = Kind.error;
 
       for (let c of cards.trim()) {
@@ -102,7 +102,7 @@ function part1(input: string[]) {
               break;
             }
             if (b[1] === 2) {
-              kind = Kind["two-pair"];
+              kind = Kind['two-pair'];
               break;
             }
           }
@@ -150,26 +150,26 @@ function part1(input: string[]) {
 
 function part2(input: string[]) {
   const valuemap = [
-    "J",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "T",
-    "Q",
-    "K",
-    "A",
+    'J',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'T',
+    'Q',
+    'K',
+    'A',
   ];
 
   const mapped: Hand[] = input
     .map((c) => {
       let bucket: Map<string, number> = new Map();
 
-      const [cards, value] = c.split(" ");
+      const [cards, value] = c.split(' ');
       let kind: Kind = Kind.error;
 
       for (let c of cards.trim()) {
@@ -184,7 +184,7 @@ function part2(input: string[]) {
         }
         case 2: {
           // check Joker
-          if (bucket.has("J")) {
+          if (bucket.has('J')) {
             // either JJJJx or JJJxx, which can become 5 of a kind
             kind = Kind.five;
             break;
@@ -202,7 +202,7 @@ function part2(input: string[]) {
           break;
         }
         case 3: {
-          const j = bucket.get("J");
+          const j = bucket.get('J');
           if (j != null) {
             if (j === 2 || j === 3) {
               // JJxxz || JJJxz
@@ -229,14 +229,14 @@ function part2(input: string[]) {
               break;
             }
             if (b[1] === 2) {
-              kind = Kind["two-pair"];
+              kind = Kind['two-pair'];
               break;
             }
           }
           break;
         }
         case 4: {
-          if (bucket.has("J")) {
+          if (bucket.has('J')) {
             kind = Kind.three;
           } else {
             kind = Kind.pair;
@@ -245,7 +245,7 @@ function part2(input: string[]) {
         }
         case 5: {
           // only one of the 5 can be a "J"
-          if (bucket.has("J")) {
+          if (bucket.has('J')) {
             kind = Kind.pair;
           } else {
             kind = Kind.high;

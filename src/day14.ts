@@ -8,12 +8,12 @@ O.#..O.#.#
 .......O..
 #....###..
 #OO..#....`
-  .split("\n")
-  .map((r) => r.split(""));
+  .split('\n')
+  .map((r) => r.split(''));
 
 const puzzle_input = `<get from aoc website>`
-  .split("\n")
-  .map((r) => r.split(""));
+  .split('\n')
+  .map((r) => r.split(''));
 
 function log(u: unknown) {
   console.log(JSON.stringify(u, undefined, 2));
@@ -22,7 +22,7 @@ function log(u: unknown) {
 function moveBouldersNorth(input: string[][]) {
   function findEmpty(col: number, prev: number | null): number | null {
     for (let i = prev ?? 0; i < input.length; i++) {
-      if (input[i][col] === ".") {
+      if (input[i][col] === '.') {
         return i;
       }
     }
@@ -34,15 +34,15 @@ function moveBouldersNorth(input: string[][]) {
     for (let row = 0; row < input.length; row++) {
       const c = input[row][col];
 
-      if (c === "O") {
+      if (c === 'O') {
         const nextEmpty = findEmpty(col, empty);
         if (nextEmpty != null && nextEmpty < row) {
           empty = nextEmpty;
-          input[row][col] = ".";
-          input[empty][col] = "O";
+          input[row][col] = '.';
+          input[empty][col] = 'O';
         }
       }
-      if (c === "#") {
+      if (c === '#') {
         // reset empty
         empty = row;
       }
@@ -54,7 +54,7 @@ function moveBouldersNorth(input: string[][]) {
 function moveBouldersEast(input: string[][]) {
   function findEmpty(row: number, prev: number | null): number | null {
     for (let i = prev ?? input[0].length - 1; i >= 0; i--) {
-      if (input[row][i] === ".") {
+      if (input[row][i] === '.') {
         return i;
       }
     }
@@ -67,15 +67,15 @@ function moveBouldersEast(input: string[][]) {
     for (let col = input[0].length - 1; col >= 0; col--) {
       const c = input[row][col];
 
-      if (c === "O") {
+      if (c === 'O') {
         const nextEmpty = findEmpty(row, empty);
         if (nextEmpty != null && nextEmpty > col) {
           empty = nextEmpty;
-          input[row][col] = ".";
-          input[row][empty] = "O";
+          input[row][col] = '.';
+          input[row][empty] = 'O';
         }
       }
-      if (c === "#") {
+      if (c === '#') {
         // reset empty
         empty = col;
       }
@@ -87,7 +87,7 @@ function moveBouldersEast(input: string[][]) {
 function moveBouldersSouth(input: string[][]) {
   function findEmpty(col: number, prev: number | null): number | null {
     for (let i = prev ?? input.length - 1; i >= 0; i--) {
-      if (input[i][col] === ".") {
+      if (input[i][col] === '.') {
         return i;
       }
     }
@@ -99,15 +99,15 @@ function moveBouldersSouth(input: string[][]) {
     for (let row = input.length - 1; row >= 0; row--) {
       const c = input[row][col];
 
-      if (c === "O") {
+      if (c === 'O') {
         const nextEmpty = findEmpty(col, empty);
         if (nextEmpty != null && nextEmpty > row) {
           empty = nextEmpty;
-          input[row][col] = ".";
-          input[empty][col] = "O";
+          input[row][col] = '.';
+          input[empty][col] = 'O';
         }
       }
-      if (c === "#") {
+      if (c === '#') {
         // reset empty
         empty = row;
       }
@@ -119,7 +119,7 @@ function moveBouldersSouth(input: string[][]) {
 function moveBouldersWest(input: string[][]) {
   function findEmpty(row: number, prev: number | null): number | null {
     for (let i = prev ?? 0; i < input[0].length; i++) {
-      if (input[row][i] === ".") {
+      if (input[row][i] === '.') {
         return i;
       }
     }
@@ -132,15 +132,15 @@ function moveBouldersWest(input: string[][]) {
     for (let col = 0; col < input[0].length; col++) {
       const c = input[row][col];
 
-      if (c === "O") {
+      if (c === 'O') {
         const nextEmpty = findEmpty(row, empty);
         if (nextEmpty != null && nextEmpty < col) {
           empty = nextEmpty;
-          input[row][col] = ".";
-          input[row][empty] = "O";
+          input[row][col] = '.';
+          input[row][empty] = 'O';
         }
       }
-      if (c === "#") {
+      if (c === '#') {
         // reset empty
         empty = col;
       }
@@ -152,7 +152,7 @@ function moveBouldersWest(input: string[][]) {
 function calcLoad(input: string[][]): number[] {
   const load = input.map((row, i) => {
     const weight = input.length - i;
-    const count = row.filter((tile) => tile === "O").length;
+    const count = row.filter((tile) => tile === 'O').length;
 
     return weight * count;
   });

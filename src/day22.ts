@@ -167,7 +167,6 @@ function doWork(input: string[]) {
     const current = getNode(brick[2]);
     const q: string[] = Array.from(current.supports);
     let destroyed: string[] = [brick[2]];
-    const visited = new Set<string>();
     // log(`BRICK ${b[2]} supports ${JSON.stringify(q)}`);
     while (q.length > 0) {
       const cId = q.splice(0, 1)[0];

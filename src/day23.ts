@@ -1,6 +1,3 @@
-import { get } from 'http';
-import { start } from 'repl';
-
 function log(u: unknown) {
   console.log(JSON.stringify(u, undefined, 2));
 }

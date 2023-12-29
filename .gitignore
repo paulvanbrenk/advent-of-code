@@ -6,3 +6,5 @@ node_modules
 
 .aoc_tiles/*
 !.aoc_tiles/tiles/
+
+session.cookie

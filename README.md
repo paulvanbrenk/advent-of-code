@@ -1,6 +1,6 @@
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  2023 - 46 ⭐
+  2023 - 48 ⭐
 </h1>
 <a href="src/2023/day1.ts">
   <img src=".aoc_tiles/tiles/2023/01.png" width="161px">
@@ -70,5 +70,8 @@
 </a>
 <a href="src/2023/day23.ts">
   <img src=".aoc_tiles/tiles/2023/23.png" width="161px">
+</a>
+<a href="src/2023/day24.ts">
+  <img src=".aoc_tiles/tiles/2023/24.png" width="161px">
 </a>
 <!-- AOC TILES END -->

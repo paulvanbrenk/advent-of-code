@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
-  "include": ["src/**/*"],
+  "extends": "@tsconfig/node22/tsconfig.json",
+  "include": ["src/2024/*"],
   "compilerOptions": { "outDir": "build" }
 }

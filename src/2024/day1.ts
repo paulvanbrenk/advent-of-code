@@ -35,12 +35,11 @@ function part2(left: number[], right: number[]) {
   for (let n of left) {
     const mult = map.get(n) ?? 0;
 
-    console.log(JSON.stringify({ mult, n }));
     result += BigInt(n * mult);
   }
 
   return result;
 }
 
-console.log(part2(left, right));
+console.log(part1(left, right));
 console.log(part2(left, right));

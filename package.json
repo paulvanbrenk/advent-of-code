@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "prettier -w src/**/*.ts",
-    "run": "tsc -p tsconfig.json && node build/day2.js"
+    "run": "tsc -p tsconfig.json && node build/day3.js"
   },
   "author": "",
   "license": "ISC",

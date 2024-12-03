@@ -4,6 +4,7 @@ node_modules
 **/*.js
 **/*.txt
 **/input.*
+**/raw.*
 
 .aoc_tiles/*
 !.aoc_tiles/tiles/

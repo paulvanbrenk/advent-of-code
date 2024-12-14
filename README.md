@@ -1,6 +1,6 @@
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  2024 - 26 ⭐ - TypeScript
+  2024 - 28 ⭐ - TypeScript
 </h1>
 <a href="src/2024/day1.ts">
   <img src=".aoc_tiles/tiles/2024/01.png" width="161px">
@@ -40,6 +40,9 @@
 </a>
 <a href="src/2024/day13.ts">
   <img src=".aoc_tiles/tiles/2024/13.png" width="161px">
+</a>
+<a href="src/2024/day14.ts">
+  <img src=".aoc_tiles/tiles/2024/14.png" width="161px">
 </a>
 <h1 align="center">
   2023 - 50 ⭐ - TypeScript
@@ -120,3 +123,9 @@
   <img src=".aoc_tiles/tiles/2023/25.png" width="161px">
 </a>
 <!-- AOC TILES END -->
+
+## Note:
+
+- For linear equations use Cramer's rule
+
+---

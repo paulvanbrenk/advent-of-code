@@ -1,6 +1,6 @@
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  2024 - 32 ⭐ - TypeScript
+  2024 - 34 ⭐ - TypeScript
 </h1>
 <a href="src/2024/day1.ts">
   <img src=".aoc_tiles/tiles/2024/01.png" width="161px">
@@ -49,6 +49,9 @@
 </a>
 <a href="src/2024/day16.ts">
   <img src=".aoc_tiles/tiles/2024/16.png" width="161px">
+</a>
+<a href="src/2024/day17.ts">
+  <img src=".aoc_tiles/tiles/2024/17.png" width="161px">
 </a>
 <h1 align="center">
   2023 - 50 ⭐ - TypeScript

@@ -5,18 +5,19 @@
   "main": "index.js",
   "scripts": {
     "lint": "prettier -w src/**/*.ts",
-    "run": "npx tsx scripts/run-latest.ts",
-    "setup": "npx tsx scripts/create-advent-of-code-starters.ts"
+    "run": "tsx scripts/run-latest.ts",
+    "setup": "tsx scripts/create-advent-of-code-starters.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/node24": "^24.0.1",
     "@types/node": "^24.0.3",
-    "prettier": "^3.4.2",
-    "typescript": "^5.7.2"
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "heap-js": "^2.2.0"
+    "heap-js": "^2.7.1",
+    "tsx": "^4.20.6"
   }
 }

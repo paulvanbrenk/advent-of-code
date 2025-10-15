@@ -11,7 +11,7 @@ import {
   gridDimensions,
   findInGrid,
   findAllInGrid,
-  printGrid
+  printGrid,
 } from './input';
 
 console.log('Testing input parsing helpers...\n');
@@ -106,8 +106,10 @@ console.log();
 
 // Test 13: printGrid
 console.log('13. printGrid():');
-printGrid(charGrid(`###
+printGrid(
+  charGrid(`###
 #.#
-###`));
+###`),
+);
 
 console.log('\nAll tests completed!');

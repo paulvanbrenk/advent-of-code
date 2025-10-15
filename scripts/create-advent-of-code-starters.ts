@@ -135,19 +135,16 @@ async function createStarterFiles() {
       await fs.writeFile(
         filePath,
         `// Advent of Code ${YEAR} - Day ${day}
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 import { lines, charGrid } from '../utils/input';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-function readInput(filename: string): string {
-  return readFileSync(join(__dirname, filename), 'utf-8').trim();
+async function readInput(filename: string): Promise<string> {
+  // Note: tsx provides __dirname even in ES modules
+  return (await readFile(join(__dirname, filename), 'utf-8')).trim();
 }
 
-function solvePart1(input: string): string | number {
+async function solvePart1(input: string): Promise<string | number> {
   // Parse input - examples:
   // const inputLines = lines(input);
   // const grid = charGrid(input);
@@ -156,24 +153,28 @@ function solvePart1(input: string): string | number {
   return 0;
 }
 
-function solvePart2(input: string): string | number {
+async function solvePart2(input: string): Promise<string | number> {
   // TODO: Implement Part 2
   return 0;
 }
 
-// Parse command line arguments
-const args = process.argv.slice(2);
-const part = args.includes('--part2') ? 2 : 1;
-const useExample = args.includes('--example');
+async function main() {
+  // Parse command line arguments
+  const args = process.argv.slice(2);
+  const part = args.includes('--part2') ? 2 : 1;
+  const useExample = args.includes('--example');
 
-const inputFile = useExample ? 'example${day}.txt' : 'input${day}.txt';
-const input = readInput(inputFile);
+  const inputFile = useExample ? 'example${day}.txt' : 'input${day}.txt';
+  const input = await readInput(inputFile);
 
-if (part === 1) {
-  console.log('Part 1:', solvePart1(input));
-} else {
-  console.log('Part 2:', solvePart2(input));
+  if (part === 1) {
+    console.log('Part 1:', await solvePart1(input));
+  } else {
+    console.log('Part 2:', await solvePart2(input));
+  }
 }
+
+main();
 `
       )
       console.log(`Created: ${filePath}`)

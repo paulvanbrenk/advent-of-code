@@ -31,7 +31,7 @@ if (YEAR < 2015 || YEAR > maxYear) {
   process.exit(1)
 }
 const DAYS = 25
-const BASE_DIR = path.resolve(__dirname, `../../advent-of-code/${YEAR}`)
+const BASE_DIR = path.resolve(__dirname, `../src/${YEAR}`)
 
 async function ensureDir(dir: string): Promise<void> {
   await fs.mkdir(dir, { recursive: true })
@@ -73,11 +73,19 @@ async function downloadInput(year: number, day: number, dest: string, sessionCoo
 
 async function createStarterFiles() {
   await ensureDir(BASE_DIR)
-  const sessionCookie = process.env.AOC_SESSION
+
+  // Read session cookie from session.cookie file
+  let sessionCookie: string | undefined
+  try {
+    const cookieContent = await fs.readFile(path.resolve(__dirname, "../session.cookie"), "utf-8")
+    sessionCookie = cookieContent.trim()
+  } catch (err) {
+    console.warn("Could not read session.cookie file. Input downloads may fail.")
+  }
+
   for (let day = 1; day <= DAYS; day++) {
-    const dayStr = day.toString().padStart(2, "0")
-    const filePath = path.join(BASE_DIR, `day${dayStr}.ts`)
-    const inputPath = path.join(BASE_DIR, `day${dayStr}.input.txt`)
+    const filePath = path.join(BASE_DIR, `day${day}.ts`)
+    const inputPath = path.join(BASE_DIR, `input${day}.txt`)
     let created = false
     if (!(await fileExists(filePath))) {
       await fs.writeFile(

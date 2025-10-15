@@ -1,0 +1,45 @@
+{
+  // Disable all AI-powered features for Advent of Code
+
+  // GitHub Copilot
+  "github.copilot.enable": {
+    "*": false
+  },
+
+  // Disable inline suggestions
+  "editor.inlineSuggest.enabled": false,
+
+  // Disable parameter hints
+  "editor.parameterHints.enabled": false,
+
+  // Disable quick suggestions
+  "editor.quickSuggestions": {
+    "other": false,
+    "comments": false,
+    "strings": false
+  },
+
+  // Disable suggest on trigger characters
+  "editor.suggestOnTriggerCharacters": false,
+
+  // Disable word based suggestions
+  "editor.wordBasedSuggestions": "off",
+
+  // Disable snippet suggestions
+  "editor.snippetSuggestions": "none",
+
+  // Disable IntelliCode
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+
+  // Tabnine (if installed)
+  "tabnine.experimentalAutoImports": false,
+
+  // Amazon CodeWhisperer (if installed)
+  "aws.codeWhisperer.shareCodeWhispererContentWithAWS": false,
+
+  // Codeium (if installed)
+  "codeium.enableCodeLens": false,
+  "codeium.enableConfig": {
+    "*": false
+  }
+}

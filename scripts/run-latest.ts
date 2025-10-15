@@ -34,11 +34,39 @@ async function getLatestDay(): Promise<{ year: number; day: number }> {
 async function main() {
   try {
     const { year, day } = await getLatestDay()
-    console.log(`Running ${year}/day${day}...\n`)
 
-    // Run directly with tsx (no compilation needed)
+    // Parse command line arguments (skip first 2 which are node and script path)
+    const args = process.argv.slice(2)
+    const useExample = args.includes('--example')
+    const part1Only = args.includes('--part1')
+    const part2Only = args.includes('--part2')
+
+    const dataSource = useExample ? 'example' : 'puzzle input'
     const filePath = path.resolve(__dirname, `../src/${year}/day${day}.ts`)
-    execSync(`npx tsx ${filePath}`, { stdio: "inherit" })
+
+    if (part1Only) {
+      // Run only part 1
+      console.log(`Running ${year}/day${day} - Part 1 with ${dataSource}...\n`)
+      const part1Args = useExample ? '--example' : ''
+      execSync(`npx tsx ${filePath} ${part1Args}`, { stdio: "inherit" })
+    } else if (part2Only) {
+      // Run only part 2
+      console.log(`Running ${year}/day${day} - Part 2 with ${dataSource}...\n`)
+      const part2Args = useExample ? '--example --part2' : '--part2'
+      execSync(`npx tsx ${filePath} ${part2Args}`, { stdio: "inherit" })
+    } else {
+      // Run both parts (default behavior)
+      console.log(`Running ${year}/day${day} with ${dataSource}...\n`)
+
+      // Run part 1
+      console.log('=== Part 1 ===')
+      const part1Args = useExample ? '--example' : ''
+      execSync(`npx tsx ${filePath} ${part1Args}`, { stdio: "inherit" })
+
+      console.log('\n=== Part 2 ===')
+      const part2Args = useExample ? '--example --part2' : '--part2'
+      execSync(`npx tsx ${filePath} ${part2Args}`, { stdio: "inherit" })
+    }
   } catch (err) {
     console.error("Error:", err instanceof Error ? err.message : err)
     process.exit(1)

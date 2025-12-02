@@ -1,9 +1,7 @@
-
-import { promises as fs } from "fs"
-import { createWriteStream } from "fs"
-import path from "path"
-import https from "https"
-
+import { promises as fs } from 'fs';
+import { createWriteStream } from 'fs';
+import path from 'path';
+import https from 'https';
 
 function showUsage() {
   console.log(`Usage: npx tsx scripts/create-advent-of-code-starters.ts [OPTIONS]
@@ -17,118 +15,140 @@ Examples:
   npm run setup
   npm run setup -- --year 2016
   npm run setup -- --download-all
-  npx tsx scripts/create-advent-of-code-starters.ts --year 2022`)
+  npx tsx scripts/create-advent-of-code-starters.ts --year 2022`);
 }
 
 // CLI argument parsing
-const argv = process.argv.slice(2)
-let yearArg: number | undefined
-let downloadAll = false
+const argv = process.argv.slice(2);
+let yearArg: number | undefined;
+let downloadAll = false;
 
 // Check for help flag first
-if (argv.includes("--help") || argv.includes("-h")) {
-  showUsage()
-  process.exit(0)
+if (argv.includes('--help') || argv.includes('-h')) {
+  showUsage();
+  process.exit(0);
 }
 
 for (let i = 0; i < argv.length; i++) {
-  const arg = argv[i]
+  const arg = argv[i];
 
-  if (arg === "--year") {
+  if (arg === '--year') {
     if (!argv[i + 1]) {
-      console.error("Error: --year requires a year argument\n")
-      showUsage()
-      process.exit(1)
+      console.error('Error: --year requires a year argument\n');
+      showUsage();
+      process.exit(1);
     }
-    yearArg = parseInt(argv[i + 1], 10)
+    yearArg = parseInt(argv[i + 1], 10);
     if (isNaN(yearArg)) {
-      console.error(`Error: Invalid year "${argv[i + 1]}". Year must be a number.\n`)
-      showUsage()
-      process.exit(1)
+      console.error(
+        `Error: Invalid year "${argv[i + 1]}". Year must be a number.\n`,
+      );
+      showUsage();
+      process.exit(1);
     }
-    i++
-  } else if (arg === "--download-all") {
-    downloadAll = true
-  } else if (arg.startsWith("--")) {
-    console.error(`Error: Unknown option "${arg}"\n`)
-    showUsage()
-    process.exit(1)
+    i++;
+  } else if (arg === '--download-all') {
+    downloadAll = true;
+  } else if (arg.startsWith('--')) {
+    console.error(`Error: Unknown option "${arg}"\n`);
+    showUsage();
+    process.exit(1);
   } else {
-    console.error(`Error: Unexpected argument "${arg}"\n`)
-    showUsage()
-    process.exit(1)
+    console.error(`Error: Unexpected argument "${arg}"\n`);
+    showUsage();
+    process.exit(1);
   }
 }
 
-const now = new Date()
-const currentYear = now.getFullYear()
-const currentMonth = now.getMonth() + 1 // 1-based
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1; // 1-based
 
 // Only allow years from 2015 to the last December (if before December, last year)
-const maxYear = currentMonth >= 12 ? currentYear : currentYear - 1
-const YEAR = yearArg ?? maxYear
+const maxYear = currentMonth >= 12 ? currentYear : currentYear - 1;
+const YEAR = yearArg ?? maxYear;
 if (YEAR < 2015 || YEAR > maxYear) {
-  console.error(`Year must be between 2015 and ${maxYear}`)
-  process.exit(1)
+  console.error(`Year must be between 2015 and ${maxYear}`);
+  process.exit(1);
 }
-const DAYS = 25
-const BASE_DIR = path.resolve(__dirname, `../src/${YEAR}`)
+const DAYS = YEAR < 2025 ? 25 : 12;
+const BASE_DIR = path.resolve(__dirname, `../src/${YEAR}`);
 
 async function ensureDir(dir: string): Promise<void> {
-  await fs.mkdir(dir, { recursive: true })
+  await fs.mkdir(dir, { recursive: true });
 }
 
 async function fileExists(filePath: string): Promise<boolean> {
   try {
-    await fs.access(filePath)
-    return true
+    await fs.access(filePath);
+    return true;
   } catch {
-    return false
+    return false;
   }
 }
 
-async function downloadInput(year: number, day: number, dest: string, sessionCookie?: string): Promise<void> {
-  const url = `https://adventofcode.com/${year}/day/${day}/input`
-  const options: https.RequestOptions = {
-    headers: sessionCookie
-      ? { Cookie: `session=${sessionCookie}` }
-      : {},
+class DayNotAvailableError extends Error {
+  constructor(day: number) {
+    super(`Day ${day} is not yet available`);
+    this.name = 'DayNotAvailableError';
   }
+}
+
+async function downloadInput(
+  year: number,
+  day: number,
+  dest: string,
+  sessionCookie?: string,
+): Promise<void> {
+  const url = `https://adventofcode.com/${year}/day/${day}/input`;
+  const options: https.RequestOptions = {
+    headers: sessionCookie ? { Cookie: `session=${sessionCookie}` } : {},
+  };
   return new Promise((resolve, reject) => {
     const req = https.get(url, options, (res) => {
-      if (res.statusCode !== 200) {
-        reject(new Error(`Failed to fetch input for day ${day}: ${res.statusCode}`))
-        return
+      if (res.statusCode === 404) {
+        reject(new DayNotAvailableError(day));
+        return;
       }
-      const fileStream = createWriteStream(dest)
-      res.pipe(fileStream)
-      fileStream.on("finish", () => {
-        fileStream.close()
-        resolve()
-      })
-    })
-    req.on("error", reject)
-  })
+      if (res.statusCode !== 200) {
+        reject(
+          new Error(`Failed to fetch input for day ${day}: ${res.statusCode}`),
+        );
+        return;
+      }
+      const fileStream = createWriteStream(dest);
+      res.pipe(fileStream);
+      fileStream.on('finish', () => {
+        fileStream.close();
+        resolve();
+      });
+    });
+    req.on('error', reject);
+  });
 }
 
-
 async function createStarterFiles() {
-  await ensureDir(BASE_DIR)
+  await ensureDir(BASE_DIR);
 
   // Read session cookie from session.cookie file
-  let sessionCookie: string | undefined
+  let sessionCookie: string | undefined;
   try {
-    const cookieContent = await fs.readFile(path.resolve(__dirname, "../session.cookie"), "utf-8")
-    sessionCookie = cookieContent.trim()
+    const cookieContent = await fs.readFile(
+      path.resolve(__dirname, '../session.cookie'),
+      'utf-8',
+    );
+    sessionCookie = cookieContent.trim();
   } catch (err) {
-    console.warn("Could not read session.cookie file. Input downloads may fail.")
+    console.warn(
+      'Could not read session.cookie file. Input downloads may fail.',
+    );
   }
 
   for (let day = 1; day <= DAYS; day++) {
-    const filePath = path.join(BASE_DIR, `day${day}.ts`)
-    const examplePath = path.join(BASE_DIR, `example${day}.txt`)
-    const inputPath = path.join(BASE_DIR, `input${day}.txt`)
-    let created = false
+    const filePath = path.join(BASE_DIR, `day${day}.ts`);
+    const examplePath = path.join(BASE_DIR, `example${day}.txt`);
+    const inputPath = path.join(BASE_DIR, `input${day}.txt`);
+    let created = false;
 
     // Create solution file
     if (!(await fileExists(filePath))) {
@@ -175,10 +195,10 @@ async function main() {
 }
 
 main();
-`
-      )
-      console.log(`Created: ${filePath}`)
-      created = true
+`,
+      );
+      console.log(`Created: ${filePath}`);
+      created = true;
     }
 
     // Create example file
@@ -186,22 +206,26 @@ main();
       await fs.writeFile(
         examplePath,
         `// Add example input from the puzzle description here
-`
-      )
-      console.log(`Created: ${examplePath}`)
+`,
+      );
+      console.log(`Created: ${examplePath}`);
     }
     if (downloadAll || created || !(await fileExists(inputPath))) {
       try {
-        await downloadInput(YEAR, day, inputPath, sessionCookie)
-        console.log(`Downloaded input for day ${day}`)
+        await downloadInput(YEAR, day, inputPath, sessionCookie);
+        console.log(`Downloaded input for day ${day}`);
       } catch (err) {
-        console.warn(`Could not download input for day ${day}: ${err}`)
+        if (err instanceof DayNotAvailableError) {
+          console.log(`Day ${day} is not yet available. Stopping.`);
+          break;
+        }
+        console.warn(`Could not download input for day ${day}: ${err}`);
       }
     }
   }
 }
 
 createStarterFiles().catch((err) => {
-  console.error("Error creating Advent of Code starter files:", err)
-  process.exit(1)
-})
+  console.error('Error creating Advent of Code starter files:', err);
+  process.exit(1);
+});

@@ -150,6 +150,19 @@ async function createStarterFiles() {
     const inputPath = path.join(BASE_DIR, `input${day}.txt`);
     let created = false;
 
+    if (downloadAll || created || !(await fileExists(inputPath))) {
+      try {
+        await downloadInput(YEAR, day, inputPath, sessionCookie);
+        console.log(`Downloaded input for day ${day}`);
+      } catch (err) {
+        if (err instanceof DayNotAvailableError) {
+          console.log(`Day ${day} is not yet available. Stopping.`);
+          break;
+        }
+        console.warn(`Could not download input for day ${day}: ${err}`);
+      }
+    }
+
     // Create solution file
     if (!(await fileExists(filePath))) {
       await fs.writeFile(
@@ -210,19 +223,8 @@ main();
       );
       console.log(`Created: ${examplePath}`);
     }
-    if (downloadAll || created || !(await fileExists(inputPath))) {
-      try {
-        await downloadInput(YEAR, day, inputPath, sessionCookie);
-        console.log(`Downloaded input for day ${day}`);
-      } catch (err) {
-        if (err instanceof DayNotAvailableError) {
-          console.log(`Day ${day} is not yet available. Stopping.`);
-          break;
-        }
-        console.warn(`Could not download input for day ${day}: ${err}`);
-      }
-    }
   }
+  process.exit(0);
 }
 
 createStarterFiles().catch((err) => {

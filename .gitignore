@@ -5,7 +5,7 @@ node_modules
 **/*.txt
 **/input.*
 **/raw.*
-
+!src/utils/input.ts
 .aoc_tiles/*
 !.aoc_tiles/tiles/
 

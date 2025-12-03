@@ -6,4 +6,4 @@ repos:
         args:
           - --auto-add-tiles-to-git=amend
           - --count-as-solved-when=on_leaderboard
-          - --verbose
+          - --verbosity=2

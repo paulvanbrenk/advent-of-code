@@ -174,3 +174,87 @@ export function printGrid(grid: unknown[][]): void {
     console.log(row.join(''));
   }
 }
+
+/**
+ * Direction offsets for 4-way (cardinal) neighbors: up, right, down, left
+ */
+export const DIRS_4 = [
+  [-1, 0],
+  [0, 1],
+  [1, 0],
+  [0, -1],
+] as const;
+
+/**
+ * Direction offsets for 8-way neighbors (including diagonals)
+ */
+export const DIRS_8 = [
+  [-1, -1],
+  [-1, 0],
+  [-1, 1],
+  [0, -1],
+  [0, 1],
+  [1, -1],
+  [1, 0],
+  [1, 1],
+] as const;
+
+/**
+ * Executes a function for each neighbor of a grid cell
+ * @param row - Current row position
+ * @param col - Current column position
+ * @param fn - Callback receiving neighbor row, col, and direction index
+ * @param dirs - Direction offsets to use (default: DIRS_8 for 8-way)
+ */
+export function forEachNeighbor(
+  row: number,
+  col: number,
+  fn: (nrow: number, ncol: number, dirIndex: number) => void,
+  dirs: readonly (readonly [number, number])[] = DIRS_8,
+): void {
+  for (let i = 0; i < dirs.length; i++) {
+    const [dr, dc] = dirs[i];
+    fn(row + dr, col + dc, i);
+  }
+}
+
+/**
+ * Executes a function for each valid neighbor within grid bounds
+ * @param grid - The grid (used to check bounds)
+ * @param row - Current row position
+ * @param col - Current column position
+ * @param fn - Callback receiving neighbor row, col, cell value, and direction index
+ * @param dirs - Direction offsets to use (default: DIRS_8 for 8-way)
+ */
+export function forEachGridNeighbor<T>(
+  grid: T[][],
+  row: number,
+  col: number,
+  fn: (nrow: number, ncol: number, value: T, dirIndex: number) => void,
+  dirs: readonly (readonly [number, number])[] = DIRS_8,
+): void {
+  for (let i = 0; i < dirs.length; i++) {
+    const [dr, dc] = dirs[i];
+    const nrow = row + dr;
+    const ncol = col + dc;
+    if (nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[nrow].length) {
+      fn(nrow, ncol, grid[nrow][ncol], i);
+    }
+  }
+}
+
+/**
+ * Returns an array of valid neighbor positions within grid bounds
+ */
+export function getNeighbors<T>(
+  grid: T[][],
+  row: number,
+  col: number,
+  dirs: readonly (readonly [number, number])[] = DIRS_8,
+): { row: number; col: number; value: T }[] {
+  const neighbors: { row: number; col: number; value: T }[] = [];
+  forEachGridNeighbor(grid, row, col, (nrow, ncol, value) => {
+    neighbors.push({ row: nrow, col: ncol, value });
+  }, dirs);
+  return neighbors;
+}

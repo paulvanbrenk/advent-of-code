@@ -1,96 +1,71 @@
 // Advent of Code 2025 - Day 4
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { charGrid } from '../utils/input';
+import { charGrid, forEachGridNeighbor } from '../utils/input';
 
 async function readInput(filename: string): Promise<string> {
-  // Note: tsx provides __dirname even in ES modules
   return (await readFile(join(__dirname, filename), 'utf-8')).trim();
 }
 
-function countAdj(grid: string[][], x: number, y: number) {
-  let cnt = 0;
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      const item = grid[x + i]?.[y + j];
-      cnt += item === '@' ? 1 : 0;
-    }
-  }
-  return cnt - 1;
+function countAdj(grid: string[][], row: number, col: number): number {
+  let count = 0;
+  forEachGridNeighbor(grid, row, col, (_, __, value) => {
+    if (value === '@') count++;
+  });
+  return count;
 }
 
-function updAdj(grid: (number | undefined)[][], x: number, y: number) {
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      const item = grid[x + i]?.[y + j];
-      if (item) {
-        grid[x + i][y + j] = item - 1;
-      }
+function decrementAdj(grid: (number | undefined)[][], row: number, col: number): void {
+  forEachGridNeighbor(grid, row, col, (nrow, ncol, value) => {
+    if (value != null) {
+      grid[nrow][ncol] = value - 1;
     }
-  }
+  });
+}
+
+function buildAdjacencyGrid(grid: string[][]): (number | undefined)[][] {
+  return grid.map((row, r) =>
+    row.map((cell, c) => (cell === '@' ? countAdj(grid, r, c) : undefined))
+  );
 }
 
 async function solvePart1(input: string): Promise<string | number> {
   const grid = charGrid(input);
+  const adjacency = buildAdjacencyGrid(grid);
 
-  const clone: number[][] = [];
-
-  for (let x = 0; x < grid.length; x++) {
-    const row = grid[x]!;
-    clone[x] = [];
-    for (let y = 0; y < row.length; y++) {
-      if (grid[x][y] === '@') {
-        const cnt = countAdj(grid, x, y);
-        clone[x][y] = cnt;
-      }
+  let unstableCount = 0;
+  for (const row of adjacency) {
+    for (const cell of row) {
+      if (cell != null && cell < 4) unstableCount++;
     }
   }
 
-  let cnt = 0;
-  for (let row of clone) {
-    for (let cell of row) {
-      if (cell != null && cell < 4) cnt++;
-    }
-  }
-
-  return cnt;
+  return unstableCount;
 }
 
 async function solvePart2(input: string): Promise<string | number> {
   const grid = charGrid(input);
+  const adjacency = buildAdjacencyGrid(grid);
 
-  const clone: (number | undefined)[][] = [];
+  let removedCount = 0;
+  let changed: boolean;
 
-  for (let x = 0; x < grid.length; x++) {
-    const row = grid[x]!;
-    clone[x] = [];
-    for (let y = 0; y < row.length; y++) {
-      if (grid[x][y] === '@') {
-        const cnt = countAdj(grid, x, y);
-        clone[x][y] = cnt;
-      }
-    }
-  }
-
-  let cnt = 0;
-  let cntChange = false;
-  while (cnt == 0 || cntChange) {
-    cntChange = false;
-    for (let x = 0; x < clone.length; x++) {
-      const row = clone[x];
-      for (let y = 0; y < row.length; y++) {
-        const cell = row[y];
+  do {
+    changed = false;
+    for (let row = 0; row < adjacency.length; row++) {
+      for (let col = 0; col < adjacency[row].length; col++) {
+        const cell = adjacency[row][col];
         if (cell != null && cell < 4) {
-          row[y] = undefined;
-          updAdj(clone, x, y);
-          cntChange = true;
-          cnt++;
+          adjacency[row][col] = undefined;
+          decrementAdj(adjacency, row, col);
+          changed = true;
+          removedCount++;
         }
       }
     }
-  }
+  } while (changed);
 
-  return cnt;
+  return removedCount;
 }
 
 async function main() {

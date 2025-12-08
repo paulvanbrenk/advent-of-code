@@ -36,33 +36,41 @@ async function solvePart1(input: string): Promise<string | number> {
 async function solvePart2(input: string): Promise<string | number> {
   const inputLines = lines(input);
 
-  let timeLines = 1;
+  let current = new Map<number, number>();
+  let next = new Map<number, number>();
   let startIdx = inputLines[0].indexOf('S');
-  const beams = new Set<number>();
-  beams.add(startIdx);
+
+  current.set(startIdx, 1);
 
   for (let l of inputLines) {
     for (let i = 0; i < l.length; i++) {
       const ch = l[i];
       if (ch === '^') {
-        if (beams.has(i)) {
-          timeLines *= 2;
-          beams.delete(i);
-          beams.add(i - 1);
-          beams.add(i + 1);
+        const cnt = current.get(i);
+        if (cnt != null) {
+          next.set(i - 1, (next.get(i - 1) ?? 0) + cnt);
+          next.set(i + 1, (next.get(i + 1) ?? 0) + cnt);
+          current.delete(i);
         }
       }
     }
+    for (let [key, val] of current.entries()) {
+      next.set(key, (next.get(key) ?? 0) + val);
+    }
+    current = next;
+    next = new Map<number, number>();
   }
 
-  return timeLines;
+  const output = current.values().reduce((a, c) => a + c, 0);
+
+  return output;
 }
 
 async function main() {
   // Parse command line arguments
   const args = process.argv.slice(2);
   const part = args.includes('--part2') ? 2 : 1;
-  const useExample = true; //args.includes('--example');
+  const useExample = args.includes('--example');
 
   const inputFile = useExample ? 'example7.txt' : 'input7.txt';
   const input = await readInput(inputFile);

@@ -1,12 +1,6 @@
 export type Point3D = [x: number, y: number, z: number];
 export type Point2D = [x: number, y: number];
 
-/**
- * Calculates the Euclidean distance between two 3D points
- * @param p1 - First point [x, y, z]
- * @param p2 - Second point [x, y, z]
- * @returns The Euclidean distance between the two points
- */
 export function euclideanDistance(p1: Point2D, p2: Point2D): number;
 export function euclideanDistance(p1: Point3D, p2: Point3D): number;
 export function euclideanDistance(
@@ -39,7 +33,6 @@ function cross(a: Point2D, b: Point2D, c: Point2D): number {
 
 export type Segment = [p1: Point2D, p2: Point2D];
 
-// Proper intersection only (touching ignored)
 export function intersect(s1: Segment, s2: Segment): boolean {
   const [p1, p2] = s1;
   const [q1, q2] = s2;
@@ -52,8 +45,6 @@ export function intersect(s1: Segment, s2: Segment): boolean {
   return c1 * c2 < 0 && c3 * c4 < 0;
 }
 
-// Point-in-polygon using ray casting algorithm
-// Returns true if point is inside or on the edge of the polygon
 export function pointInPolygon(point: Point2D, polygon: Point2D[]): boolean {
   const [x, y] = point;
   let inside = false;
@@ -77,7 +68,7 @@ export function pointInPolygon(point: Point2D, polygon: Point2D[]): boolean {
     }
 
     // Ray casting
-    if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
+    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) {
       inside = !inside;
     }
   }

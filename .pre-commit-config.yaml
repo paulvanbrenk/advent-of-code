@@ -1,9 +1,11 @@
 repos:
   - repo: https://github.com/LiquidFun/aoc_tiles
-    rev: 0.6.4
+    rev: 0.7.0
     hooks:
       - id: aoc-tiles
         args:
           - --auto-add-tiles-to-git=amend
           - --count-as-solved-when=on_leaderboard
           - --verbosity=2
+          - --theme=aoc
+          - --animation=snow

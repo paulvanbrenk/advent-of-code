@@ -1,7 +1,8 @@
 // Advent of Code 2025 - Day 11
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { lines, charGrid, mapLines } from '../utils/input';
+import { mapLines } from '../utils/input';
+import { hash } from '../utils/math';
 
 async function readInput(filename: string): Promise<string> {
   // Note: tsx provides __dirname even in ES modules
@@ -48,8 +49,6 @@ async function solvePart2(input: string): Promise<string | number> {
   const seen = new Set<string>();
   const start = 'svr';
   const end = 'out';
-
-  const hash = (s: string, d: boolean, f: boolean) => `${s}:${d}:${f}`;
 
   const memo = new Map<string, number>();
 

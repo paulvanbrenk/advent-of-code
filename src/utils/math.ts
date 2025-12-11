@@ -284,6 +284,14 @@ export function intersect(s1: Segment, s2: Segment): boolean {
   return c1 * c2 < 0 && c3 * c4 < 0;
 }
 
+/**
+ * Creates a hash string from any number of arguments.
+ * Useful for memoization keys.
+ */
+export function hash(...args: unknown[]): string {
+  return args.join(':');
+}
+
 export function pointInPolygon(point: Point2D, polygon: Point2D[]): boolean {
   const [x, y] = point;
   let inside = false;

@@ -14,7 +14,7 @@ export function readInput(callerPath: string): string {
     throw new Error(`Could not determine year/day from path: ${callerPath}`);
   }
 
-  const [, year, day] = match;
+  const [, , day] = match;
   const inputPath = join(dirname(callerPath), `input${day}.txt`);
 
   try {
@@ -22,6 +22,7 @@ export function readInput(callerPath: string): string {
   } catch (err) {
     throw new Error(
       `Could not read input file: ${inputPath}. Make sure to run 'npm run setup' first.`,
+      { cause: err },
     );
   }
 }
@@ -35,7 +36,9 @@ export function readInputByDay(year: number, day: number): string {
   try {
     return readFileSync(inputPath, 'utf-8').trim();
   } catch (err) {
-    throw new Error(`Could not read input file for ${year} day ${day}`);
+    throw new Error(`Could not read input file for ${year} day ${day}`, {
+      cause: err,
+    });
   }
 }
 
@@ -237,7 +240,12 @@ export function forEachGridNeighbor<T>(
     const [dr, dc] = dirs[i];
     const nrow = row + dr;
     const ncol = col + dc;
-    if (nrow >= 0 && nrow < grid.length && ncol >= 0 && ncol < grid[nrow].length) {
+    if (
+      nrow >= 0 &&
+      nrow < grid.length &&
+      ncol >= 0 &&
+      ncol < grid[nrow].length
+    ) {
       fn(nrow, ncol, grid[nrow][ncol], i);
     }
   }
@@ -253,8 +261,14 @@ export function getNeighbors<T>(
   dirs: readonly (readonly [number, number])[] = DIRS_8,
 ): { row: number; col: number; value: T }[] {
   const neighbors: { row: number; col: number; value: T }[] = [];
-  forEachGridNeighbor(grid, row, col, (nrow, ncol, value) => {
-    neighbors.push({ row: nrow, col: ncol, value });
-  }, dirs);
+  forEachGridNeighbor(
+    grid,
+    row,
+    col,
+    (nrow, ncol, value) => {
+      neighbors.push({ row: nrow, col: ncol, value });
+    },
+    dirs,
+  );
   return neighbors;
 }

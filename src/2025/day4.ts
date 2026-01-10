@@ -15,7 +15,11 @@ function countAdj(grid: string[][], row: number, col: number): number {
   return count;
 }
 
-function decrementAdj(grid: (number | undefined)[][], row: number, col: number): void {
+function decrementAdj(
+  grid: (number | undefined)[][],
+  row: number,
+  col: number,
+): void {
   forEachGridNeighbor(grid, row, col, (nrow, ncol, value) => {
     if (value != null) {
       grid[nrow][ncol] = value - 1;
@@ -25,7 +29,7 @@ function decrementAdj(grid: (number | undefined)[][], row: number, col: number):
 
 function buildAdjacencyGrid(grid: string[][]): (number | undefined)[][] {
   return grid.map((row, r) =>
-    row.map((cell, c) => (cell === '@' ? countAdj(grid, r, c) : undefined))
+    row.map((cell, c) => (cell === '@' ? countAdj(grid, r, c) : undefined)),
   );
 }
 

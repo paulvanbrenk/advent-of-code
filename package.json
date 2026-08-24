@@ -12,9 +12,9 @@
   "license": "ISC",
   "devDependencies": {
     "@tsconfig/node24": "^24.0.1",
-    "@types/node": "^25.0.2",
+    "@types/node": "^26.2.0",
     "prettier": "^3.6.2",
-    "typescript": "^6.0.2"
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "heap-js": "^2.7.1",
